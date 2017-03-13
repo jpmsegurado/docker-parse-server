@@ -39,7 +39,7 @@ var sendNotification = function(message, data){
 };
 
 
-Parse.Cloud.define('LostPet', function(request, response) {
+Parse.Cloud.afterSave('LostPet', function(request, response) {
 
   sendNotification('Mensagem arrobado', request.object);
 
