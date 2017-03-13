@@ -115,10 +115,10 @@ Parse.Cloud.define('bla', function(request, response) {
         sendNotification('Mensagem arrobado', res);
       },
       error: function(err) {
-        response.error(err.message);
+        response.success(err.message);
       }
     });
   } catch(e) {
-    response.error(e.message); 
+    response.success(e.message); 
   }
 })
