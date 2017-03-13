@@ -41,7 +41,7 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
       req.write(JSON.stringify(data));
       req.end();
     };
-    sendNotification('bla', request.object);
+    
     var lat = request.object.location.latitude;
     var long = request.object.location.longitude;
     var point = new Parse.GeoPoint({ latitude: lat, longitude: long }); 
