@@ -51,7 +51,7 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
       sendNotification('Mensagem arrobado', res);
     },
     error: function(err) {
-      console.log(err);
+      console.log(err.message);
     }
   });
 
