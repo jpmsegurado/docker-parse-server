@@ -104,8 +104,8 @@ Parse.Cloud.define('bla', function(request, response) {
       req.end();
     };
     
-    var lat = request.object.location.latitude;
-    var long = request.object.location.longitude;
+    var lat = request.params.location.latitude;
+    var long = request.params.location.longitude;
     var point = new Parse.GeoPoint({ latitude: lat, longitude: long }); 
     var query = new Parse.Query('LostPet');
     query.withinKilometers('location', point, 25);
