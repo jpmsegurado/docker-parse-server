@@ -10,7 +10,7 @@ var sendNotification = function(message, data){
 
   var data = {
     included_segments:["All"],
-    app_id: "a4ed5517-423e-406b-887b-1d43fd96fd8b",
+    app_id: "11ccaccc-f923-4474-b1e8-c4b3b6dfa1da",
     contents: {"en": message},
     data: data
   };
@@ -39,7 +39,7 @@ var sendNotification = function(message, data){
 };
 
 
-Parse.Cloud.afterSave('LostPet', function(request, response) {
+Parse.Cloud.define('LostPet', function(request, response) {
 
   sendNotification('Mensagem arrobado', request.object);
 
