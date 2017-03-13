@@ -112,8 +112,8 @@ Parse.Cloud.define('bla', function(request, response) {
     query.withinKilometers('location', point, 25);
     query.find({
       success: function(res){
-        response.success(res);
         sendNotification('Mensagem arrobado', res);
+        response.success(res);
       },
       error: function(err) {
         response.success(err);
