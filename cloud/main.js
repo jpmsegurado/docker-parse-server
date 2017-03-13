@@ -103,6 +103,8 @@ Parse.Cloud.define('bla', function(request, response) {
       req.write(JSON.stringify(data));
       req.end();
     };
+
+    response.success(request.params);
     
     var lat = request.params.location.latitude;
     var long = request.params.location.longitude;
