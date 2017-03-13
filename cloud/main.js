@@ -60,3 +60,16 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
   }
 
 });
+
+
+Parse.Cloud.define('bla', function(request, response) {
+  var query = new Parse.Query('LostPet');
+  return query.find({
+    success: function(res){
+      response.success(res);
+    },
+    error: function(err) {
+      response.error(err.message);
+    }
+  });
+})
