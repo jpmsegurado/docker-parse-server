@@ -1,8 +1,8 @@
 var _ = require('lodash');
 
-Parse.Cloud.afterSave('LostPet', function(request) {
+Parse.Cloud.afterSave('FoundPet', function(request) {
 
-  var sendNotification = function(message, data){
+  var sendNotification = function(message, data, ids){
     var tags = [];
     var headers = {
       "Content-Type": "application/json",
@@ -11,6 +11,7 @@ Parse.Cloud.afterSave('LostPet', function(request) {
 
 
     var data = {
+      // included_player_ids: ids,
       included_segments:["All"],
       app_id: "11ccaccc-f923-4474-b1e8-c4b3b6dfa1da",
       contents: {"en": message},
@@ -27,8 +28,8 @@ Parse.Cloud.afterSave('LostPet', function(request) {
 
     var https = require('https');
     var req = https.request(options, function(res) {
-      res.on('data', function(data) {
-        console.log(JSON.parse(data))
+      res.on('data', function(d) {
+        console.log(JSON.parse(d))
       });
     });
 
@@ -40,13 +41,13 @@ Parse.Cloud.afterSave('LostPet', function(request) {
     req.end();
   };
 
-  sendNotification('Mensagem arrobado', request.object);
-
-  // var point = new parse.GeoPoint({ latitude: lat, longitude: long }); 
-  // var query = new parse.Query('FoundPet');
-  // query.withinKilometers('location', point, 25);
-  // return query.find().then(function(res){
-    
-  // });
+  var lat = request.object.location.latitude;
+  var long = request.object.location.longitude;
+  var point = new Parse.GeoPoint({ latitude: lat, longitude: long }); 
+  var query = new Parse.Query('LostPet');
+  query.withinKilometers('location', point, 25);
+  return query.find().then(function(res){
+    sendNotification('Mensagem arrobado', res);
+  });
 
 });
