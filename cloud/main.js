@@ -125,7 +125,7 @@ Parse.Cloud.define('bla', function(request, response) {
     var long = -49.2247317;
     var point = new Parse.GeoPoint(lat, long); 
     var query = new Parse.Query('_User');
-    query.withinKilometers('location', point, 25);
+    query.withinKilometers('address_point', point, 25);
     query.find({
       success: response.success,
       error: response.error
