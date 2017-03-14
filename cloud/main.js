@@ -30,12 +30,12 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
       var https = require('https');
       var req = https.request(options, function(res) {
         res.on('data', function(d) {
-          console.log(JSON.parse(d))
+          console.log('success notification', JSON.parse(d))
         });
       });
 
       req.on('error', function(e) {
-        console.log(JSON.parse(e))
+        console.log('error notification', JSON.parse(e))
       });
 
       req.write(JSON.stringify(data));
@@ -52,11 +52,11 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
         sendNotification('Mensagem arrobado', res);
       },
       error: function(err) {
-        console.log(err.message);
+        console.log('error', err.message);
       }
     });
   } catch(e) {
-    console.log(e.message); 
+    console.log('err catch', e.message); 
   }
 
 });
