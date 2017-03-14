@@ -43,8 +43,8 @@ Parse.Cloud.beforeSave('FoundPet', function(request, response) {
     };
     response.success('bla');
     console.log(request.object);
-    var lat = request.object.location.latitude;
-    var long = request.object.location.longitude;
+    var lat = request.object.get('location').latitude;
+    var long = request.object.get('location').longitude;
     var point = new Parse.GeoPoint(lat, long); 
     var query = new Parse.Query('LostPet');
     query.withinKilometers('location', point, 25);
