@@ -12,12 +12,13 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
 
 
       var data = {
-        included_player_ids: ids,
-        // included_segments:["All"],
+        // included_player_ids: ids,
+        included_segments:["All"],
         app_id: "11ccaccc-f923-4474-b1e8-c4b3b6dfa1da",
         contents: {"en": message},
         data: {
-          players: data
+          players: data,
+          ids: ids
         }
       };
 
