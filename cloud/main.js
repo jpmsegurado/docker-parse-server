@@ -55,13 +55,23 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
         var players = [];
         _.forEach(res, function(item) {
           if(
-            players.indexOf(item.get('user').toJSON().player_id) === -1
+            players.indexOf(item.get('user').toJSON().player_id) === -1 &&
+            item.get('user').toJSON().player_id !== request.object.get('user').objectId
           ) {
             players.push(item.get('user').toJSON().player_id);
           }
         });
 
-        sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', null, players);
+        var usersQuery = new Parse.Query('_User');
+        usersQuery.withinKilometers('location', point, 25);
+        usersQuery.find({
+          success: function(users) {
+            sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', users[0], players);
+            // _.forEach(users, function(usr) {
+
+            // });
+          }
+        });
       },
       error: function(err) {
         console.error('error', err.message);
