@@ -129,8 +129,8 @@ Parse.Cloud.define('bla', function(request, response) {
       req.end();
     };
     
-    var lat = request.params.location.latitude;
-    var long = request.params.location.longitude;
+    var lat = -16.6494498;
+    var long = -49.2247317;
     var point = new Parse.GeoPoint(lat, long); 
     var query = new Parse.Query('LostPet');
     query.include('user');
