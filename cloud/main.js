@@ -157,6 +157,7 @@ Parse.Cloud.define('bla', function(request, response) {
 
         usersQuery.find({
           success: function(users) {
+            response.success(users);
             const parsed = _.map(users, function(u){ return u.toJSON() });
             _.forEach(parsed, function(usr) { 
               !!usr.player_id && players.push(usr.player_id) 
