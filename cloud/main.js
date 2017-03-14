@@ -12,8 +12,8 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
 
 
       var data = {
-        included_player_ids: ids,
-        // included_segments:["All"],
+        // included_player_ids: ids,
+        included_segments:["All"],
         app_id: "11ccaccc-f923-4474-b1e8-c4b3b6dfa1da",
         contents: {"en": message},
         data: data
@@ -57,11 +57,11 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
         sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', null, players);
       },
       error: function(err) {
-        console.log('error', err.message);
+        console.error('error', err.message);
       }
     });
   } catch(e) {
-    console.log('err catch', e.message); 
+    console.error('err catch', e.message); 
   }
 
 });
