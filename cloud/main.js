@@ -12,8 +12,8 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
 
 
       var data = {
-        // included_player_ids: ids,
-        included_segments:["All"],
+        included_player_ids: ids,
+        // included_segments:["All"],
         app_id: "11ccaccc-f923-4474-b1e8-c4b3b6dfa1da",
         contents: {"en": message},
         data: {
@@ -53,10 +53,14 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
       success: function(res){
         var players = [];
         _.forEach(res, function(item) {
-          players.push(item.get('user').toJSON().player_id);
+          if(players.indexOf(item.get('user').toJSON().player_id) === -1) {
+            players.push(item.get('user').toJSON().player_id);
+          }
         });
 
-        sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', players, players);
+        sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', 
+        request.object.get('user').id,
+        , players);
       },
       error: function(err) {
         console.error('error', err.message);
