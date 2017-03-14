@@ -62,13 +62,15 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
         let usersQuery = new Parse.Query(Parse.User);
         usersQuery.withinKilometers('address_point', point, 25);
 
-        usersQuery.find().then(function(users) {
-          const parsed = _.map(users, function(u){ return u.toJSON() });
-          _.forEach(parsed, function(usr) { !!usr.player_id && players.push(usr.player_id) });
-          sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', {
-            test: request.object.get('user').toJSON().objectId,
-            ids: players
-          }, players);
+        usersQuery.find({
+          success: function(users) {
+            const parsed = _.map(users, function(u){ return u.toJSON() });
+            _.forEach(parsed, function(usr) { !!usr.player_id && players.push(usr.player_id) });
+            sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', {
+              test: request.object.get('user').toJSON().objectId,
+              ids: players
+            }, players);
+          }
         });
 
       },
