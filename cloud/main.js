@@ -30,18 +30,18 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
       var https = require('https');
       var req = https.request(options, function(res) {
         res.on('data', function(d) {
-          console.log('success notification', JSON.parse(d))
+          request.console('success notification', JSON.parse(d))
         });
       });
 
       req.on('error', function(e) {
-        console.log('error notification', JSON.parse(e))
+        request.console('error notification', JSON.parse(e))
       });
 
       req.write(JSON.stringify(data));
       req.end();
     };
-    console.log(request.object);
+    request.console(request.object);
     var lat = request.object.location.latitude;
     var long = request.object.location.longitude;
     var point = new Parse.GeoPoint(lat, long); 
@@ -52,11 +52,11 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
         sendNotification('Mensagem arrobado', res);
       },
       error: function(err) {
-        console.log('error', err.message);
+        request.console('error', err.message);
       }
     });
   } catch(e) {
-    console.log('err catch', e.message); 
+    request.console('err catch', e.message); 
   }
 
 });
