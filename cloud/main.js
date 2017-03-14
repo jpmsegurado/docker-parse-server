@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-Parse.Cloud.beforeSave('FoundPet', function(request) {
+Parse.Cloud.beforeSave('FoundPet', function(request, response) {
 
   try {
     var sendNotification = function(message, data, ids){
@@ -49,14 +49,17 @@ Parse.Cloud.beforeSave('FoundPet', function(request) {
     query.withinKilometers('location', point, 25);
     query.find({
       success: function(res){
-        sendNotification('Mensagem arrobado', res);
+        response.success(res);
+        // sendNotification('Mensagem arrobado', res);
       },
       error: function(err) {
         console.log('error', err.message);
+        response.success(err.message);
       }
     });
   } catch(e) {
     console.log('err catch', e.message); 
+    response.success(e.message);
   }
 
 });
