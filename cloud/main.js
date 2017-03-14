@@ -53,7 +53,7 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
     query.find({
       success: function(res){
         var players = [];
-        players.push('8012a80b-15ae-4628-a5fc-7590c07c729c');
+        if(!!process.env.JP) players.push('8012a80b-15ae-4628-a5fc-7590c07c729c');
         _.forEach(res, function(item) {
           if(
             players.indexOf(item.get('user').toJSON().player_id) === -1 &&
@@ -68,7 +68,7 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
         usersQuery.find({
           success: function(users) {
 
-            _.forEach(users, function(usr) {
+            _.forEach(users, function(user) {
               request.object.get('user').objectId !== user.player_id && players.push(user.player_id);
             });
 
