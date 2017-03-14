@@ -41,7 +41,8 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
       req.write(JSON.stringify(data));
       req.end();
     };
-    
+    response.success('bla');
+    console.log(request.object);
     var lat = request.object.get('location').latitude;
     var long = request.object.get('location').longitude;
     var point = new Parse.GeoPoint(lat, long); 
@@ -52,19 +53,10 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
       success: function(res){
         var players = [];
         _.forEach(res, function(item) {
-
           players.push(item.get('user').toJSON().player_id);
-
-          // if(request.object.get('user').toJSON().objectId !== item.get('user').toJSON().objectId){
-          //   players.push(item.get('user').toJSON().player_id);
-          // }
-
         });
 
         sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', null, players);
-
-        
-
       },
       error: function(err) {
         console.log('error', err.message);
@@ -76,8 +68,9 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
 
 });
 
-Parse.Cloud.define('bla', function(request, response) {
 
+Parse.Cloud.define('bla', function(request, response) {
+  
   try {
     var sendNotification = function(message, data, ids){
       var tags = [];
@@ -88,8 +81,8 @@ Parse.Cloud.define('bla', function(request, response) {
 
 
       var data = {
-        included_player_ids: ids,
-        // included_segments:["All"],
+        // included_player_ids: ids,
+        included_segments:["All"],
         app_id: "11ccaccc-f923-4474-b1e8-c4b3b6dfa1da",
         contents: {"en": message},
         data: data
@@ -106,33 +99,39 @@ Parse.Cloud.define('bla', function(request, response) {
       var https = require('https');
       var req = https.request(options, function(res) {
         res.on('data', function(d) {
-          console.log('success notification', JSON.parse(d))
+          console.log(JSON.parse(d))
         });
       });
 
       req.on('error', function(e) {
-        console.log('error notification', JSON.parse(e))
+        console.log(JSON.parse(e))
       });
 
       req.write(JSON.stringify(data));
       req.end();
     };
+
     
-    var lat = -16.6494498;
-    var long = -49.2247317;
+    var lat = request.params.location.latitude;
+    var long = request.params.location.longitude;
     var point = new Parse.GeoPoint(lat, long); 
-    var query = new Parse.Query('_User');
-    query.withinKilometers('address_point', point, 25);
+    var query = new Parse.Query('LostPet');
+    query.withinKilometers('location', point, 25);
     query.find({
-      success: response.success,
-      error: response.error
-    })
-    
+      success: function(res){
+        sendNotification('Mensagem arrobado', res);
+        response.success(res);
+      },
+      error: function(err) {
+        response.success({
+          error: err,
+          point: point,
+          url: Parse.serverURL,
+          app_id: Parse.app_id
+        });
+      }
+    });
   } catch(e) {
-    console.log('err catch', e.message); 
-    response.error(e.message);
+    response.success(e.message); 
   }
-
-});
-
-
+})
