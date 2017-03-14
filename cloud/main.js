@@ -51,7 +51,7 @@ Parse.Cloud.beforeSave('FoundPet', function(request, response) {
     query.find({
       success: function(res){
         response.success(res);
-        // sendNotification('Mensagem arrobado', res);
+        sendNotification('Mensagem arrobado', res);
       },
       error: function(err) {
         console.log('error', err.message);
