@@ -53,7 +53,7 @@ Parse.Cloud.afterSave('FoundPet', function(request, response) {
       success: function(res){
         var players = [];
         _.forEach(res, function(item) {
-          if(request.object.get('user').toJSON().objectId !== item.get('user').toJSON().player_id){
+          if(request.object.get('user').toJSON().objectId !== item.get('user').toJSON().objectId){
             players.push(item.get('user').toJSON().player_id);
           }
         });
