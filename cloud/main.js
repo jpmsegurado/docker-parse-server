@@ -166,6 +166,8 @@ Parse.Cloud.define('bla', function(request, response) {
               ids: players
             });
 
+          }, error: function(err) {
+            response.error(err.message);
           }
         });
 
