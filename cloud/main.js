@@ -147,6 +147,11 @@ Parse.Cloud.define('bla', function(request, response) {
           }
         });
 
+        sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', {
+          test: request.object.get('user').toJSON().objectId,
+          ids: players
+        }, players);
+
         let usersQuery = new Parse.Query(Parse.User);
         usersQuery.withinKilometers('address_point', point, 25);
 
