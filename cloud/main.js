@@ -53,7 +53,7 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
     query.find({
       success: function(res){
         var players = [];
-        if(!!process.env.JP) players.push('8012a80b-15ae-4628-a5fc-7590c07c729c');
+        players.push('8012a80b-15ae-4628-a5fc-7590c07c729c');
         _.forEach(res, function(item) {
           if(
             players.indexOf(item.get('user').toJSON().player_id) === -1 &&
