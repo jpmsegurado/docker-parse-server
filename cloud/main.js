@@ -119,7 +119,7 @@ Parse.Cloud.define('bla', function(request, response) {
         response.success({
           error: err,
           point: point,
-          parse: Parse
+          url: Parse.serverURL
         });
       }
     });
