@@ -113,10 +113,13 @@ Parse.Cloud.define('bla', function(request, response) {
     query.find({
       success: function(res){
         sendNotification('Mensagem arrobado', res);
-        response.success(res);
+        response.success({
+          error: res,
+          point: point
+        });
       },
       error: function(err) {
-        response.success('error', err);
+        response.success( err);
       }
     });
   } catch(e) {
