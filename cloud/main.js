@@ -51,7 +51,7 @@ Parse.Cloud.afterSave('FoundPet', function(request, response) {
     query.find({
       success: function(res){
         _.forEach(res, function(item) {
-          sendNotification('Há novos pets encontrados próximos', item.toJSON().user, null);
+          sendNotification('Há novos pets encontrados próximos', item.toJSON().user.toJSON(), null);
         });
       },
       error: function(err) {
