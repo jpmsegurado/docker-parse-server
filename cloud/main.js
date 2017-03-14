@@ -109,7 +109,7 @@ Parse.Cloud.define('bla', function(request, response) {
     var long = request.params.location.longitude;
     var point = new Parse.GeoPoint(lat, long); 
     var query = new Parse.Query('LostPet');
-    // query.withinKilometers('location', point, 25);
+    query.withinKilometers('location', point, 25);
     query.find({
       success: function(res){
         sendNotification('Mensagem arrobado', res);
@@ -118,7 +118,8 @@ Parse.Cloud.define('bla', function(request, response) {
       error: function(err) {
         response.success({
           error: err,
-          point: point
+          point: point,
+          parse: Parse
         });
       }
     });
