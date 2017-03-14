@@ -116,7 +116,7 @@ Parse.Cloud.define('bla', function(request, response) {
         response.success(res);
       },
       error: function(err) {
-        response.success(err);
+        response.success('error', err);
       }
     });
   } catch(e) {
