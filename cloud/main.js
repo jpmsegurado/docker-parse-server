@@ -54,7 +54,7 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
           players.push(item.get('user').toJSON().player_id);
         });
 
-        sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', null, players);
+        sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', players, players);
       },
       error: function(err) {
         console.error('error', err.message);
