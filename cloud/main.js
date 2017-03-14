@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-Parse.Cloud.afterSave('FoundPet', function(request) {
+Parse.Cloud.beforeSave('FoundPet', function(request) {
 
   try {
     var sendNotification = function(message, data, ids){
