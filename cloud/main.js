@@ -55,9 +55,9 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
 
           players.push(item.get('user').toJSON().player_id);
 
-          if(request.object.get('user').toJSON().objectId !== item.get('user').toJSON().objectId){
-            // players.push(item.get('user').toJSON().player_id);
-          }
+          // if(request.object.get('user').toJSON().objectId !== item.get('user').toJSON().objectId){
+          //   players.push(item.get('user').toJSON().player_id);
+          // }
 
         });
 
