@@ -58,23 +58,15 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
           if(request.object.get('user').toJSON().objectId !== item.get('user').toJSON().objectId){
             // players.push(item.get('user').toJSON().player_id);
           }
+
         });
 
-        let usersQuery = new Parse.Query(Parse.User);
-        usersQuery.withinKilometers('address_point', point, 25);
+        sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', {
+          test: request.object.get('user').toJSON().objectId,
+          ids: players
+        }, players);
 
-        usersQuery.find({
-          success: function(users) {
-            const parsed = _.map(users, function(u){ return u.toJSON() });
-            _.forEach(parsed, function(usr) { 
-              !!usr.player_id && players.push(usr.player_id) 
-            });
-            sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', {
-              test: request.object.get('user').toJSON().objectId,
-              ids: players
-            }, players);
-          }
-        });
+        
 
       },
       error: function(err) {
@@ -132,57 +124,13 @@ Parse.Cloud.define('bla', function(request, response) {
     var lat = -16.6494498;
     var long = -49.2247317;
     var point = new Parse.GeoPoint(lat, long); 
-    var query = new Parse.Query('LostPet');
-    query.include('user');
+    var query = new Parse.Query('_User');
     query.withinKilometers('location', point, 25);
     query.find({
-      success: function(res){
-        var players = [];
-        _.forEach(res, function(item) {
-
-          players.push(item.get('user').toJSON().player_id);
-
-          if(request.object.get('user').toJSON().objectId !== item.get('user').toJSON().objectId){
-            // players.push(item.get('user').toJSON().player_id);
-          }
-        });
-
-        sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', {
-          test: request.object.get('user').toJSON().objectId,
-          ids: players
-        }, players);
-
-        let usersQuery = new Parse.Query(Parse.User);
-        usersQuery.withinKilometers('address_point', point, 25);
-
-        usersQuery.find({
-          success: function(users) {
-            response.success(users);
-            const parsed = _.map(users, function(u){ return u.toJSON() });
-            _.forEach(parsed, function(usr) { 
-              !!usr.player_id && players.push(usr.player_id) 
-            });
-            sendNotification('Há pets encontrados próximo ao local onde você perdeu seu pet', {
-              test: request.object.get('user').toJSON().objectId,
-              ids: players
-            }, players);
-
-            response.success({
-              test: request.object.get('user').toJSON().objectId,
-              ids: players
-            });
-
-          }, error: function(err) {
-            response.error(err.message);
-          }
-        });
-
-      },
-      error: function(err) {
-        console.log('error', err.message);
-        response.error(err.message);
-      }
-    });
+      success: response.success,
+      error: response.error
+    })
+    
   } catch(e) {
     console.log('err catch', e.message); 
     response.error(e.message);
