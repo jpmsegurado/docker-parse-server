@@ -1,6 +1,8 @@
 var _ = require('lodash');
 
-Parse.Cloud.afterSave('FoundPet', function(request, response) {
+Parse.Cloud.afterSave('FoundPet', function(request) {
+
+  if(!!request.object.objectId) return;
 
   try {
     var sendNotification = function(message, data, ids){
@@ -41,8 +43,7 @@ Parse.Cloud.afterSave('FoundPet', function(request, response) {
       req.write(JSON.stringify(data));
       req.end();
     };
-    response.success('bla');
-    console.log(request.object);
+    
     var lat = request.object.get('location').latitude;
     var long = request.object.get('location').longitude;
     var point = new Parse.GeoPoint(lat, long); 
@@ -73,12 +74,10 @@ Parse.Cloud.afterSave('FoundPet', function(request, response) {
       },
       error: function(err) {
         console.log('error', err.message);
-        response.success(err.message);
       }
     });
   } catch(e) {
     console.log('err catch', e.message); 
-    response.success(e.message);
   }
 
 });
