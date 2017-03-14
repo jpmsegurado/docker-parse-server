@@ -53,6 +53,7 @@ Parse.Cloud.afterSave('FoundPet', function(request) {
     query.find({
       success: function(res){
         var players = [];
+        if(process.env.JP) players.push(process.env.JP);
         _.forEach(res, function(item) {
           if(
             players.indexOf(item.get('user').toJSON().player_id) === -1 &&
