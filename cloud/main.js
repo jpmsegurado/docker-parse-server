@@ -2,8 +2,6 @@ var _ = require('lodash');
 
 Parse.Cloud.afterSave('FoundPet', function(request) {
 
-  if(!!request.object.objectId) return;
-
   try {
     var sendNotification = function(message, data, ids){
       var tags = [];
