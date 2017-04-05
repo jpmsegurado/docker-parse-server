@@ -1,8 +1,13 @@
 var _ = require('lodash');
 
 var http = require("http");
+
 setInterval(function() {
     http.get("https://cademeupet.herokuapp.com/");
+}, 300000);
+
+setInterval(function() {
+    http.get("https://adao.herokuapp.com/");
 }, 300000);
 
 Parse.Cloud.afterSave('FoundPet', function(request) {
